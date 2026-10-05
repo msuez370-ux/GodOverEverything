@@ -299,102 +299,101 @@
   // Priorité : 1) colonne "Image URL 1" du Sheets  2) ce dictionnaire  3) emoji de la catégorie
   // Les clés sont comparées sans espaces, sans accents, sans majuscules :
   // "iPhone 15pro max" et "iPhone 15 Pro Max" tombent sur la même clé.
-  const GSM = 'https://fdn2.gsmarena.com/vv/pics/';
-  const GSB = 'https://fdn2.gsmarena.com/vv/bigpic/';
-  const APL = c => 'https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/' + c + '?wid=800&hei=800&fmt=jpeg&qlt=90';
-  const PSN = c => 'https://gmedia.playstation.com/is/image/SIEPDC/' + c + '?$800px--t$';
-
+  const IMG_DIR = 'images/'; // les photos sont dans le dépôt : aucun site externe n'est sollicité
+  // Pour ajouter une photo : dépose le fichier dans images/ et ajoute une ligne ici.
   const PRODUCT_IMAGES = {
-    // iPhone
-    'iphone xr':         GSM + 'apple/apple-iphone-xr-1.jpg',
-    'iphone xs max':     GSB + 'apple-iphone-xs-max-new1.jpg',
-    'iphone 11':         GSM + 'apple/apple-iphone-11-1.jpg',
-    'iphone 11 pro':     GSB + 'apple-iphone-11-pro.jpg',
-    'iphone 11 pro max': GSB + 'apple-iphone-11-pro-max-.jpg',
-    'iphone 12':         GSM + 'apple/apple-iphone-12-2.jpg',
-    'iphone 12 pro':     GSM + 'apple/apple-iphone-12-pro-2.jpg',
-    'iphone 12 pro max': GSM + 'apple/apple-iphone-12-pro-max-2.jpg',
-    'iphone 13':         GSM + 'apple/apple-iphone-13-2.jpg',
-    'iphone 13 pro':     GSM + 'apple/apple-iphone-13-pro-2.jpg',
-    'iphone 13 pro max': GSM + 'apple/apple-iphone-13-pro-max-2.jpg',
-    'iphone 14':         GSM + 'apple/apple-iphone-14-1.jpg',
-    'iphone 14 pro':     GSM + 'apple/apple-iphone-14-pro-1.jpg',
-    'iphone 14 pro max': GSM + 'apple/apple-iphone-14-pro-max-1.jpg',
-    'iphone 15':         GSM + 'apple/apple-iphone-15-1.jpg',
-    'iphone 15 plus':    GSM + 'apple/apple-iphone-15-plus-1.jpg',
-    '15 plus':           GSM + 'apple/apple-iphone-15-plus-1.jpg',
-    'iphone 15 pro':     GSM + 'apple/apple-iphone-15-pro-1.jpg',
-    'iphone 15 pro max': GSM + 'apple/apple-iphone-15-pro-max-1.jpg',
-    'iphone 16':         GSM + 'apple/apple-iphone-16-1.jpg',
-    'iphone 16 plus':    GSM + 'apple/apple-iphone-16-plus-1.jpg',
-    'iphone 16 pro':     GSM + 'apple/apple-iphone-16-pro-1.jpg',
-    'iphone 16 ro':      GSM + 'apple/apple-iphone-16-pro-1.jpg', // faute de frappe dans le Sheets
-    'iphone 16 pro max': GSM + 'apple/apple-iphone-16-pro-max-1.jpg',
-    'iphone 17':         GSM + 'apple/apple-iphone-17-1.jpg',
-    'iphone 17 pro':     GSM + 'apple/apple-iphone-17-pro-1.jpg',
-    'iphone 17 pro max': GSM + 'apple/apple-iphone-17-pro-max-1.jpg',
-    'iphone 17 air':     GSM + 'apple/apple-iphone-air-1.jpg',
-    // Samsung
-    'samsung a07':       GSM + 'samsung/samsung-galaxy-a07-2.jpg',
-    'samsung a16':       GSM + 'samsung/samsung-galaxy-a16-5g-1.jpg',
-    'samsung a17':       GSM + 'samsung/samsung-galaxy-a17-4g-1.jpg',
-    'samsung a26':       GSM + 'samsung/samsung-galaxy-a26-1.jpg',
-    'samsung a56':       GSM + 'samsung/samsung-galaxy-a56-1.jpg',
-    'samsung s22':       GSM + 'samsung/samsung-galaxy-s22-ultra-5g-1.jpg',
-    'samsung s23':       GSM + 'samsung/samsung-galaxy-s23-ultra-5g-1.jpg',
-    'samsung s24':       GSM + 'samsung/samsung-galaxy-s24-ultra-5g-sm-s928-1.jpg',
-    'samsung s25':       GSM + 'samsung/samsung-galaxy-s25-ultra-sm-s938-1.jpg',
-    'samsung s26':       GSM + 'samsung/samsung-galaxy-s26-ultra-1.jpg',
-    'samsung zford 6':   GSM + 'samsung/samsung-galaxy-z-fold6-1.jpg', // orthographe du Sheets
-    'samsung z fold 6':  GSM + 'samsung/samsung-galaxy-z-fold6-1.jpg',
-    // Autres téléphones
-    'pixel 9 pro xl':    GSM + 'google/google-pixel-9-pro-xl-1.jpg',
-    'nokia 105':         GSM + 'nokia/nokia-105-2023-1.jpg',
-    // iPad (11e = même design que 10e ; Air M3/M4 = design Air M2 ; Pro M5 = design Pro M4)
-    'ipad 10e':          GSM + 'apple/apple-ipad-10-2022-1.jpg',
-    'ipad 11e':          GSM + 'apple/apple-ipad-10-2022-1.jpg',
-    'ipad pro m1':       GSM + 'apple/apple-ipad-pro-129-2021-1.jpg',
-    'ipad pro m2':       GSM + 'apple/apple-ipad-pro-129-2022-1.jpg',
-    'ipad pro m3':       GSM + 'apple/apple-ipad-pro-129-2022-1.jpg',
-    'ipad pro m4':       GSM + 'apple/apple-ipad-pro-11-2024-2.jpg',
-    'ipad pro m5':       GSM + 'apple/apple-ipad-pro-11-2024-2.jpg',
-    'ipad air m1':       GSM + 'apple/apple-ipad-air-2022-1.jpg',
-    'ipad air m2':       GSM + 'apple/apple-ipad-air-11-2024-2.jpg',
-    'ipad air m3':       GSM + 'apple/apple-ipad-air-11-2024-2.jpg',
-    'ipad air m4':       GSM + 'apple/apple-ipad-air-11-2024-2.jpg',
-    // MacBook
-    'macbook pro m1':    APL('mbp-spacegray-select-202011'),
-    'macbook pro m2':    APL('mbp-spacegray-select-202206'),
-    'macbook pro m3':    APL('mbp14-spacegray-select-202310'),
-    'macbook pro m4':    APL('mbp14-spaceblack-select-202410'),
-    'macbook air m1':    APL('macbook-air-space-gray-select-201810'),
-    'macbook air m2':    APL('macbook-air-midnight-select-20220606'),
-    'macbook air m3':    APL('mba13-midnight-select-202402'),
-    'macbook air m4':    APL('mba13-skyblue-select-202503'),
-    // Écouteurs
-    'airpod max':        APL('airpods-max-select-202409-midnight'),
-    'airpod 3':          APL('MME73'),
-    'airpod 4':          APL('airpods-4-anc-select-202409'),
-    'airpod pro':        APL('airpods-pro-3-hero-select-202509'),
-    'ecouteur iphone lightning': APL('MMTN2'),
-    'ecouteur usb c':    APL('MTJY3'),
-    // Chargeurs et câbles
-    'chargeur complet':  APL('MHJE3'),
-    'cable type usb c':  APL('MQKJ3'),
-    'cable iphone lightning': APL('MM0A3'),
-    // Coques et bracelets
-    'coque iphone':      APL('MA7E4'),
-    'coque ipad':        APL('MWK63'),
-    'bracelet apple watch': APL('MYJ93'),
-    // Apple Watch (Série 11 = même design que Série 10)
-    'apple watch serie 8':  GSM + 'apple/apple-watch-8-1.jpg',
-    'apple watch serie 9':  GSM + 'apple/apple-watch-series9-1.jpg',
-    'apple watch serie 10': GSM + 'apple/apple-watch-series10-1.jpg',
-    'apple watch serie 11': GSM + 'apple/apple-watch-series10-1.jpg',
-    // Gaming
-    'ps5 slim':          PSN('ps5-product-thumbnail-01-en-14sep21'),
-    'ps5 pro':           PSN('ps5-pro-dualsense-image-block-01-en-16aug24'),
-    'manette ps5':       PSN('dualsense-controller-product-thumbnail-01-en-14sep21'),
+    'iphone xr':                   'iphone-xr.jpg',
+    'iphone xs max':               'iphone-xs-max.jpg',
+    'iphone 11':                   'iphone-11.jpg',
+    'iphone 11 pro':               'iphone-11-pro.jpg',
+    'iphone 11 pro max':           'iphone-11-pro-max.jpg',
+    'iphone 12':                   'iphone-12.jpg',
+    'iphone 12 pro':               'iphone-12-pro.jpg',
+    'iphone 12 pro max':           'iphone-12-pro-max.jpg',
+    'iphone 13':                   'iphone-13.jpg',
+    'iphone 13 pro':               'iphone-13-pro.jpg',
+    'iphone 13 pro max':           'iphone-13-pro-max.jpg',
+    'iphone 14':                   'iphone-14.jpg',
+    'iphone 14 pro':               'iphone-14-pro.jpg',
+    'iphone 14 pro max':           'iphone-14-pro-max.jpg',
+    'iphone 15':                   'iphone-15.jpg',
+    'iphone 15 plus':              'iphone-15-plus.jpg',
+    '15 plus':                     'iphone-15-plus.jpg',
+    'iphone 15 pro':               'iphone-15-pro.jpg',
+    'iphone 15 pro max':           'iphone-15-pro-max.jpg',
+    'iphone 16':                   'iphone-16.jpg',
+    'iphone 16 plus':              'iphone-16-plus.jpg',
+    'iphone 16 pro':               'iphone-16-pro.jpg',
+    'iphone 16 ro':                'iphone-16-pro.jpg',
+    'iphone 16 pro max':           'iphone-16-pro-max.jpg',
+    'iphone 17':                   'iphone-17.jpg',
+    'iphone 17 pro':               'iphone-17-pro.jpg',
+    'iphone 17 pro max':           'iphone-17-pro-max.jpg',
+    'iphone 17 air':               'iphone-17-air.jpg',
+    'samsung a07':                 'samsung-a07.jpg',
+    'samsung a16':                 'samsung-a16.jpg',
+    'samsung a17':                 'samsung-a17.jpg',
+    'samsung a26':                 'samsung-a26.jpg',
+    'samsung a56':                 'samsung-a56.jpg',
+    'samsung s22':                 'samsung-s22.jpg',
+    'samsung s23':                 'samsung-s23.jpg',
+    'samsung s24':                 'samsung-s24.jpg',
+    'samsung s25':                 'samsung-s25.jpg',
+    'samsung s26':                 'samsung-s26.jpg',
+    'samsung zford 6':             'samsung-z-fold-6.jpg',
+    'samsung z fold 6':            'samsung-z-fold-6.jpg',
+    'pixel 9 pro xl':              'pixel-9-pro-xl.jpg',
+    'nokia 105':                   'nokia-105.jpg',
+    'ipad 10e':                    'ipad-10e.jpg',
+    'ipad 11e':                    'ipad-10e.jpg',
+    'ipad pro m1':                 'ipad-pro-m1.jpg',
+    'ipad pro m2':                 'ipad-pro-m2.jpg',
+    'ipad pro m3':                 'ipad-pro-m2.jpg',
+    'ipad pro m4':                 'ipad-pro-m4.jpg',
+    'ipad pro m5':                 'ipad-pro-m4.jpg',
+    'ipad air m1':                 'ipad-air-m1.jpg',
+    'ipad air m2':                 'ipad-air-m2.jpg',
+    'ipad air m3':                 'ipad-air-m2.jpg',
+    'ipad air m4':                 'ipad-air-m2.jpg',
+    'macbook pro m1':              'macbook-pro-m1.jpg',
+    'macbook pro m2':              'macbook-pro-m2.jpg',
+    'macbook pro m3':              'macbook-pro-m3.jpg',
+    'macbook pro m4':              'macbook-pro-m4.jpg',
+    'macbook air m1':              'macbook-air-m1.jpg',
+    'macbook air m2':              'macbook-air-m2.jpg',
+    'macbook air m3':              'macbook-air-m3.jpg',
+    'macbook air m4':              'macbook-air-m4.jpg',
+    'airpod max':                  'airpod-max.jpg',
+    'airpod 3':                    'airpod-3.jpg',
+    'airpod 4':                    'airpod-4.jpg',
+    'airpod pro':                  'airpod-pro.jpg',
+    'ecouteur iphone lightning':   'ecouteur-iphone-lightning.jpg',
+    'ecouteur usb c':              'ecouteur-usb-c.jpg',
+    'chargeur complet':            'chargeur-complet.jpg',
+    'cable type usb c':            'cable-type-usb-c.jpg',
+    'cable iphone lightning':      'cable-iphone-lightning.jpg',
+    'coque iphone':                'coque-iphone.jpg',
+    'coque ipad':                  'coque-ipad.jpg',
+    'bracelet apple watch':        'bracelet-apple-watch.jpg',
+    'apple watch serie 8':         'apple-watch-serie-8.jpg',
+    'apple watch serie 9':         'apple-watch-serie-9.jpg',
+    'apple watch serie 10':        'apple-watch-serie-10.jpg',
+    'apple watch serie 11':        'apple-watch-serie-10.jpg',
+    'ps5 slim':                    'ps5-slim.jpg',
+    'ps5 pro':                     'ps5-pro.jpg',
+    'manette ps5':                 'manette-ps5.jpg',
+    'dji osmo':                    'dji-osmo.png',
+    'dji osmo pocket3 combo':      'dji-osmo-pocket3-combo.png',
+    'ray ban meta':                'ray-ban-meta.jpg',
+    'jbl':                         'jbl.png',
+    'laboubou':                    'laboubou.jpg',
+    'fifa24':                      'fifa24.jpg',
+    'fifa25':                      'fifa25.jpg',
+    'fifa26':                      'fifa26.png',
+    'playstation portal':          'playstation-portal.jpg',
+    'incassable':                  'incassable.png',
+    'prise simple':                'prise-simple.jpg',
+    'connecteur bnc':              'connecteur-bnc.jpg',
   };
 
   // Produits qui contiennent le nom d'un autre produit mais ne doivent pas hériter de sa photo
@@ -402,7 +401,7 @@
 
   const normKey = t => (t || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]/g, '');
   const IMG_KEYS = Object.entries(PRODUCT_IMAGES)
-    .map(([k, url]) => [normKey(k), url])
+    .map(([k, file]) => [normKey(k), IMG_DIR + file])
     .sort((a, b) => b[0].length - a[0].length); // la clé la plus longue gagne (15 pro max avant 15)
 
   function getProductImage(name, sheetUrl) {
@@ -418,7 +417,7 @@
     const emoji = `<span style="font-size:${size}px">${p.icon}</span>`;
     if (!p.image) return emoji;
     const alt = p.name.replace(/"/g, '&quot;');
-    return `<img src="${p.image}" alt="${alt}" loading="lazy" referrerpolicy="no-referrer" style="width:100%;height:100%;object-fit:contain;padding:${size > 40 ? 12 : 4}px;" onerror="this.outerHTML=this.dataset.fb" data-fb="${emoji.replace(/"/g, '&quot;')}" />`;
+    return `<img src="${p.image}" alt="${alt}" loading="lazy" style="width:100%;height:100%;object-fit:contain;padding:${size > 40 ? 12 : 4}px;" onerror="this.outerHTML=this.dataset.fb" data-fb="${emoji.replace(/"/g, '&quot;')}" />`;
   }
 
   const CAT_ICONS = {
